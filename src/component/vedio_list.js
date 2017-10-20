@@ -1,9 +1,12 @@
 import React from 'react';
-import VedioListItem from './vedio_list_item';
+import VideoListItem from './vedio_list_item';
 const VideoList = (props) => {
+  const videoItems = props.videos.map((video) => {
+    return <VideoListItem onSelectVideo = {props.onSelectVideo} key = {video.etag} video = {video} / >
+  });
   return (
     <ul className = "col-md-4 list-group">
-      {props.videos.length}
+      {videoItems}
     </ul>
   );
 };
