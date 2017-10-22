@@ -1,6 +1,7 @@
 //create a new component. This component should produce some HTML
 //Always one component per file
 import React,{ Component } from 'react';
+import _ from 'lodash';
 import ReactDOM from 'react-dom';
 const API_KEY = 'AIzaSyAIQ6pPNnZtBDIifkZGR7nUus4-dKsf2fg';
 import SearchBar from './component/search_bar';
@@ -16,7 +17,11 @@ class App extends Component{
       selectedVideo: null
     };
 
-    YTSearch({key: API_KEY, term: 'surfboard' }, (videos) => {
+    this.videoSeach('surfboard');
+  }
+
+  videoSeach(term) {
+    YTSearch({key: API_KEY, term: term }, (videos) => {
       this.setState({
         videos:videos,
         selectedVideo: videos[0]
@@ -24,9 +29,10 @@ class App extends Component{
     });
   }
   render(){
+    const videoSeach = _.debounce((term) => {this.videoSeach(term)}, 500);
     return (
       <div>
-        <SearchBar />
+        <SearchBar onSearchTermChange = {videoSeach}/>
         <VideoDetail video = {this.state.selectedVideo} />
         <VideoList
         onSelectVideo = {selectedVideo => {this.setState({selectedVideo})}}
